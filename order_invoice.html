@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <style>
+      /* General email reset */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f4f7fc;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      .header {
+        background-color: #1f2937;
+        padding: 24px 20px;
+        text-align: center;
+      }
+      .logo {
+        max-width: 150px;
+        height: auto;
+      }
+      .content {
+        padding: 32px 24px;
+      }
+      .order-info {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+        font-size: 14px;
+        border: 1px solid #e5e7eb;
+      }
+      .order-info p {
+        margin: 4px 0;
+      }
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 24px 0 12px 0;
+        color: #111827;
+      }
+      .customer-details,
+      .shipping-address {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+        border: 1px solid #e5e7eb;
+      }
+      .customer-details p,
+      .shipping-address p {
+        margin: 6px 0;
+        font-size: 14px;
+      }
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0 24px;
+      }
+      .items-table th,
+      .items-table td {
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+      }
+      .items-table th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #4b5563;
+      }
+      .total-row {
+        font-weight: 700;
+        border-top: 2px solid #e5e7eb;
+      }
+      .button {
+        display: inline-block;
+        background-color: #0074d4;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-weight: 500;
+        margin-top: 24px;
+      }
+      .footer {
+        background-color: #f3f4f6;
+        text-align: center;
+        padding: 24px 20px;
+        font-size: 12px;
+        color: #6b7280;
+        border-top: 1px solid #e5e7eb;
+      }
+      @media only screen and (max-width: 480px) {
+        .content {
+          padding: 20px 16px;
+        }
+        .items-table th,
+        .items-table td {
+          padding: 8px 4px;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin:0; padding:20px 0; background-color:#f4f7fc;">
+    <div class="container" style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+      <!-- Header with logo -->
+      <div class="header" style="background:#1f2937; padding:2px 20px; text-align:center;"></div>
+
+      <div class="content" style="padding:32px 24px;">
+        <h2 style="margin-top:0; font-size:24px;">Thank you for your order!</h2>
+        <p style="margin:8px 0 16px; color:#4b5563;">Your order has been confirmed and will be processed shortly.</p>
+
+        <!-- Order summary card -->
+        <div class="order-info" style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:24px; border:1px solid #e5e7eb;">
+          <p style="margin:4px 0;">
+            <strong>Order #:</strong> {{ order.id }}
+          </p>
+          <p style="margin:4px 0;">
+            <strong>Date:</strong> {{ order_date }}
+          </p>
+          <p style="margin:4px 0;">
+            <strong>Payment Status:</strong> {{ order.payment_status }}
+          </p>
+          <p style="margin:4px 0;">
+            <strong>Payment Method:</strong> {{ order.payment_type }}
+          </p>
+        </div>
+
+        <!-- Customer details & shipping address -->
+        <div class="customer-details" style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:24px; border:1px solid #e5e7eb;">
+          <h3 style="margin:0 0 8px; font-size:16px;">Customer Information</h3>
+          <p style="margin:6px 0; font-size:14px;">
+            <strong>Name:</strong> {{ order.full_name }}
+          </p>
+          <p style="margin:6px 0; font-size:14px;">
+            <strong>Email:</strong> {{ order.email }}
+          </p>
+          <p style="margin:6px 0; font-size:14px;">
+            <strong>Phone:</strong> {{ order.phone }}
+          </p>
+        </div>
+
+        <div class="shipping-address" style="background:#f9fafb; border-radius:8px; padding:16px; margin-bottom:24px; border:1px solid #e5e7eb;">
+          <h3 style="margin:0 0 8px; font-size:16px;">Shipping Address</h3>
+          <p style="margin:6px 0; font-size:14px;">{{ shipping_address }}</p>
+        </div>
+
+        <!-- Order items table -->
+        <h3 class="section-title" style="font-size:18px; font-weight:600; margin:24px 0 12px 0;">Order Items</h3>
+        <table class="items-table" style="width:100%; border-collapse:collapse; margin:16px 0 24px;">
+          <thead>
+            <tr>
+              <th style="padding:12px 8px; text-align:left; border-bottom:1px solid #e5e7eb; background:#f9fafb; font-weight:600;">Product</th>
+              <th style="padding:12px 8px; text-align:center; border-bottom:1px solid #e5e7eb; background:#f9fafb; font-weight:600;">Qty</th>
+              <th style="padding:12px 8px; text-align:right; border-bottom:1px solid #e5e7eb; background:#f9fafb; font-weight:600;">Price</th>
+              <th style="padding:12px 8px; text-align:right; border-bottom:1px solid #e5e7eb; background:#f9fafb; font-weight:600;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <td style="padding:12px 8px; border-bottom:1px solid #e5e7eb; font-size:14px;">{{ item.name }}</td>
+                <td style="padding:12px 8px; border-bottom:1px solid #e5e7eb; text-align:center; font-size:14px;">{{ item.quantity }}</td>
+                <td style="padding:12px 8px; border-bottom:1px solid #e5e7eb; text-align:right; font-size:14px;">${{ item.price }}</td>
+                <td style="padding:12px 8px; border-bottom:1px solid #e5e7eb; text-align:right; font-size:14px;">${{ item.total }}</td>
+              </tr>
+            {% endfor %}
+            <tr class="total-row" style="font-weight:700; border-top:2px solid #e5e7eb;">
+              <td colspan="3" style="padding:12px 8px; text-align:right;">
+                <strong>Grand Total</strong>
+              </td>
+              <td style="padding:12px 8px; text-align:right;">
+                <strong>${{ order.total_price }}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Additional note for COD or delivery instructions -->
+        {% if order.payment_method == 'COD' %}
+          <p style="font-size:14px; color:#4b5563; margin-bottom:24px;">You have selected Cash on Delivery. Please have the exact amount ready upon delivery.</p>
+        {% endif %}
+
+        <!-- View order button -->
+        <div style="text-align:center; margin:24px 0;">
+          <a target="_blank" href="{{ order_url }}" class="button" style="display:inline-block; background:#0074d4; color:#fff; text-decoration:none; padding:12px 24px; border-radius:6px; font-weight:500;">View Order Details</a>
+        </div>
+        <p style="text-align:center; font-size:12px; color:#6b7280;">
+          If you have any questions, please contact our support team at <a href="mailto:support@urbanthread.com" style="color:#0074d4;">support@urbanthread.co</a>.
+        </p>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer" style="background:#f3f4f6; text-align:center; padding:24px 20px; font-size:12px; color:#6b7280; border-top:1px solid #e5e7eb;">
+        &copy; {{ current_year }} Urban Thread Co. All rights reserved.<br />
+        Plot 12-C, Bukhari Commercial Lane 4, DHA Phase 6, Karachi
+      </div>
+    </div>
+  </body>
+</html>
